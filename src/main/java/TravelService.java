@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class TravelService {
@@ -14,7 +13,7 @@ public class TravelService {
     }
 
     public void getAllTravels(){
-        List<TravelVO> travelList = travelDAO.findByDistrict(null);
+        List<TravelVO> travelList = travelDAO.findTravels(null,null);
         if(travelList != null){
             for(TravelVO travel : travelList){
                 System.out.println(travel);
@@ -22,7 +21,7 @@ public class TravelService {
         }
     }
     public void getTravelsByDistrict(int district){
-        List<TravelVO> travelList = travelDAO.findByDistrict(districts[district]);
+        List<TravelVO> travelList = travelDAO.findTravels("district", districts[district]);
         if(travelList != null){
             for(TravelVO travel : travelList){
                 System.out.println(travel);
@@ -30,7 +29,14 @@ public class TravelService {
         }
     }
 
-    public void getTravelsByKeyword(String keyword){
-
+    public void getTravelsByKeyword(String searchKeyword){
+        List<TravelVO> travelList = travelDAO.findTravels("keyword",searchKeyword);
+        if(travelList != null){
+            for(TravelVO travel : travelList){
+                System.out.println(travel);
+            }
+        }else{
+            System.out.println("일치하는 키워드가 없습니다.");
+        }
     }
 }

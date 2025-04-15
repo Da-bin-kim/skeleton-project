@@ -18,19 +18,31 @@ public class TravelDAO {
         }
     }
 
-    public List<TravelVO> findByDistrict(String district){
+    public List<TravelVO> findTravels(String column, String searchKeyword) {
         List<TravelVO> travelLists = new ArrayList<TravelVO>();
         ResultSet rs = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         String sql = "select * from travel";
 
-        if(district != null){
-            sql += (" where district ='" + district + "'");
-        }
-
         try {
-            stmt = conn.prepareStatement(sql);
-            rs = stmt.executeQuery(sql);
+            if(column != null && searchKeyword != null) {
+                if(column.equals("district")) {
+                    sql += " WHERE district = ?";
+                }else if(column.equals("description")) {
+                    sql += " WHERE description LIKE ?";
+                }
+            }
+
+            pstmt = conn.prepareStatement(sql);
+
+            if(column != null && searchKeyword != null) {
+                if(column.equals("district")) {
+                    pstmt.setString(1, searchKeyword);
+                }else if(column.equals("description")) {
+                    pstmt.setString(1, "%" + searchKeyword + "%");
+                }
+            }
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 TravelVO travel = new TravelVO(
                         rs.getInt(1),
@@ -46,7 +58,7 @@ public class TravelDAO {
             System.out.println("에러: "+e.getMessage());
         } finally {
             if(rs != null) {try {rs.close();} catch(SQLException e) {}}
-            if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+            if (pstmt != null) {try {pstmt.close();} catch (SQLException e) {}}
         }
         return travelLists;
     }
