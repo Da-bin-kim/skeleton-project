@@ -30,8 +30,8 @@ public class TravelService {
     }
 
     public void getTravelsByKeyword(String searchKeyword){
-        List<TravelVO> travelList = travelDAO.findTravels("keyword",searchKeyword);
-        if(travelList != null){
+        List<TravelVO> travelList = travelDAO.findTravels("description",searchKeyword);
+        if(travelList.size() != 0){
             for(TravelVO travel : travelList){
                 System.out.println(travel);
             }
