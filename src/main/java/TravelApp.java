@@ -54,10 +54,12 @@ public class TravelApp {
                     break;
                 case "3":
                     System.out.println();
-                    System.out.println("키워드 검색: ");
+                    System.out.print("키워드 검색: ");
                     String searchWord = sc.nextLine();
+                    travelService.getTravelsByKeyword(searchWord);
                     break;
                 case "4":
+                    System.out.println("프로그램을 종료합니다.");
                     sc.close();
                     System.exit(0);
                     break;
